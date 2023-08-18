@@ -1,0 +1,12 @@
+//
+// Copyright (c) 2023 Roberto Pasini <rp@kalamun.net>
+// GPLv3, see LICENSE
+//
+// @author Roberto Pasini <rp@kalamun.net>
+//
+<!-- language file start -->
+cmd_insert#:#Ajouter une Cover
+content_plugin_version#:#Cover last edited with version
+edit_input_field#:#Modifier ce Cover
+page_value:#Titre
+page_file:#Image

@@ -1,0 +1,21 @@
+.dci-cover {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50svw);
+    width: 100svw;
+    height: 30svw;
+    overflow: hidden;
+    margin-bottom: 50px;
+}
+.dci-cover img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+}
+
+.ilCOPageSection > .dci-cover:first-child {
+    margin-top: -50px;
+}
