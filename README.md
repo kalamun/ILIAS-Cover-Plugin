@@ -1,21 +1,14 @@
-Copyright (c) 2017 Fred Neumann <fred.neumann@gmx.de>
+Copyright (c) 2023 Kalamun
 GPLv3, see LICENSE
 
-Author: Fred Neumann <fred.neumann@gmx.de>
+Author: Roberto Pasini <rp@kalamun.net>
 
 
 INSTALLATION
 ------------
 
-This is an example plugin with minimal features for the ILIAS PageComponent Plugin Slot.
-
 ```
 mkdir -p Customizing/global/plugins/Services/COPage/PageComponent
 cd Customizing/global/plugins/Services/COPage/PageComponent
-git clone https://github.com/ILIAS-eLearning/TestPageComponent.git
+git clone https://github.com/kalamun/ILIAS-Cover-Plugin.git Cover
 ```
-
-### Branching
-This plugin follows the same branching-rules like the ILIAS-projekt itself:
-- trunk: Main-Development-Branch
-- release_X-X: Stable Release

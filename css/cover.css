@@ -5,8 +5,19 @@
     width: 100svw;
     height: 30svw;
     overflow: hidden;
-    margin-bottom: 50px;
+    margin: 50px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-white);
+    text-shadow: 0 0 1em var(--color-black);
 }
+.dci-cover.is-editing {
+    width: 100%;
+    transform: none;
+    left: 0;
+}
+
 .dci-cover img {
     width: 100%;
     height: 100%;
@@ -14,8 +25,9 @@
     top: 0;
     left: 0;
     object-fit: cover;
+    z-index: -1;
 }
 
-.ilCOPageSection > .dci-cover:first-child {
+#il_center_col > .dci-cover:first-child:not(.is-editing) {
     margin-top: -50px;
 }

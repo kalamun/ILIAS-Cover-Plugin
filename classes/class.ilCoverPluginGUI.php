@@ -112,17 +112,17 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
         $form = new ilPropertyFormGUI();
 
         // page value
-        $page_value = new ilTextInputGUI('page_value', 'page_value');
-        $page_value->setMaxLength(40);
-        $page_value->setSize(40);
-        $page_value->setRequired(false);
-        $form->addItem($page_value);
+        $title = new ilTextInputGUI($this->lng->txt("title"), 'title');
+        $title->setMaxLength(40);
+        $title->setSize(40);
+        $title->setRequired(false);
+        $form->addItem($title);
         
         // page file
-        $page_file = new ilFileInputGUI('page_file', 'page_file');
-        $page_file->setALlowDeletion(true);
-        $page_file->setRequired(true);
-        $form->addItem($page_file);
+        $image = new ilFileInputGUI($this->lng->txt("image"), 'image');
+        $image->setALlowDeletion(true);
+        $image->setRequired(true);
+        $form->addItem($image);
 
         // save and cancel commands
         if ($a_create) {
@@ -131,7 +131,7 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
             $form->setTitle($this->plugin->getPluginName());
         } else {
             $prop = $this->getProperties();
-            $page_value->setValue($prop['page_value']);
+            $title->setValue($prop['title']);
 
             $form->addCommandButton("update", $this->lng->txt("save"));
             $form->addCommandButton("cancel", $this->lng->txt("cancel"));
@@ -146,34 +146,35 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
     {
         if ($form->checkInput()) {
             $properties = $this->getProperties();
-
+            
             // value saved in the page
-            $properties['page_value'] = $form->getInput('page_value');
-
+            $properties['title'] = $form->getInput('title');
+            
             // file object
-            if (isset($_FILES["page_file"]["name"])) {
-                $old_file_id = empty($properties['page_file']) ? null : $properties['page_file'];
-
+            if (isset($_FILES["image"]["name"])) {
+                $old_file_id = empty($properties['image']) ? null : $properties['image'];
+                
                 $fileObj = new ilObjFile((int) $old_file_id, false);
                 $fileObj->setType("file");
-                $fileObj->setTitle($_FILES["page_file"]["name"]);
+                $fileObj->setTitle($_FILES["image"]["name"]);
                 $fileObj->setDescription("");
-                $fileObj->setFileName($_FILES["page_file"]["name"]);
+                $fileObj->setFileName($_FILES["image"]["name"]);
                 $fileObj->setMode("filelist");
                 if (empty($old_file_id)) {
                     $fileObj->create();
                 } else {
                     $fileObj->update();
                 }
+
                 // upload file to filesystem
-                if ($_FILES["page_file"]["tmp_name"] !== "") {
+                if ($_FILES["image"]["tmp_name"] !== "") {
                     $fileObj->getUploadFile(
-                        $_FILES["page_file"]["tmp_name"],
-                        $_FILES["page_file"]["name"]
+                        $_FILES["image"]["tmp_name"],
+                        $_FILES["image"]["name"]
                     );
                 }
 
-                $properties['page_file'] = $fileObj->getId();
+                $properties['image'] = $fileObj->getId();
             }
 
             if ($a_create) {
@@ -203,11 +204,11 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
     {
         // show uploaded file
         $image_url = false;
-        $title = $a_properties['page_value'];
+        $title = $a_properties['title'];
 
-        if (!empty($a_properties['page_file'])) {
+        if (!empty($a_properties['image'])) {
             try {
-                $fileObj = new ilObjFile($a_properties['page_file'], false);
+                $fileObj = new ilObjFile($a_properties['image'], false);
 
                 // security
                 $_SESSION[__CLASS__]['allowedFiles'][$fileObj->getId()] = true;
@@ -223,11 +224,12 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
 
         }
         
-        $editing = $this->ctrl->getCmd() == "edit";
-
+        include_once "Services/Style/System/classes/class.ilStyleDefinition.php";
+        $dci_skin = ilStyleDefinition::getCurrentSkin() === 'dci';
+    
         ob_start();
         ?>
-        <div class="dci-cover <?= $editing ? 'is-editing' : ''; ?>">
+        <div class="dci-cover <?= !$dci_skin ? 'is-editing' : ''; ?>">
             <?php
             if (!empty($title)) {
                 ?>

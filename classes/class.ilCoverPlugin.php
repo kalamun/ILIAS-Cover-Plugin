@@ -60,7 +60,7 @@ class ilCoverPlugin extends ilPageComponentPlugin
     {
         global $DIC;
         $mt = $DIC->ui()->mainTemplate();
-        if ($file_id = $a_properties['page_file']) {
+        if ($file_id = $a_properties['image']) {
             try {
                 include_once("./Modules/File/classes/class.ilObjFile.php");
                 $fileObj = new ilObjFile($file_id, false);
@@ -69,7 +69,7 @@ class ilCoverPlugin extends ilPageComponentPlugin
                 $new_id = $newObj->create();
                 $newObj = new ilObjFile($new_id, false);
                 $this->rCopy($fileObj->getDirectory(), $newObj->getDirectory());
-                $a_properties['page_file'] = $newObj->getId();
+                $a_properties['image'] = $newObj->getId();
                 $mt->setOnScreenMessage("info", "File Object $file_id cloned.", true);
             } catch (Exception $e) {
                 $mt->setOnScreenMessage("failure", $e->getMessage(), true);
@@ -91,7 +91,7 @@ class ilCoverPlugin extends ilPageComponentPlugin
             return;
         }
 
-        if ($file_id = ($a_properties['page_file'] ?? null)) {
+        if ($file_id = ($a_properties['image'] ?? null)) {
             try {
                 include_once("./Modules/File/classes/class.ilObjFile.php");
                 $fileObj = new ilObjFile($file_id, false);

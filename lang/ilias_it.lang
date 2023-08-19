@@ -5,6 +5,6 @@
 // @author Roberto Pasini <rp@kalamun.net>
 //
 <!-- language file start -->
-cmd_insert#:#Insert Cover
-content_plugin_version#:#Cover last edited with version
-edit_input_field#:#Edit Cover
+cmd_insert#:#Inserisci una Cover
+content_plugin_version#:#Ultima modifica della Cover
+edit_input_field#:#Modifica la Cover
