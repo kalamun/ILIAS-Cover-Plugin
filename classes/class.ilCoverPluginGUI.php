@@ -118,11 +118,34 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
         $title->setRequired(false);
         $form->addItem($title);
         
+        // page value
+        $alignment = new ilSelectInputGUI($this->lng->txt("alignment"), 'alignment');
+        $alignment->setPostVar("alignment");
+        $alignment->setOptions(["left" => "Left", "center" => "Center", "right" => "Right"]);
+        $alignment->setRequired(false);
+        $form->addItem($alignment);
+        
+        // logo
+        $logo = new ilFileInputGUI($this->lng->txt("logo"), 'logo');
+        $logo->setALlowDeletion(true);
+        $logo->setRequired(false);
+        $form->addItem($logo);
+
         // page file
-        $image = new ilFileInputGUI($this->lng->txt("image"), 'image');
-        $image->setALlowDeletion(true);
-        $image->setRequired(true);
-        $form->addItem($image);
+        $image_1 = new ilFileInputGUI($this->lng->txt("image"), 'image_1');
+        $image_1->setALlowDeletion(true);
+        $image_1->setRequired(false);
+        $form->addItem($image_1);
+
+        $image_2 = new ilFileInputGUI($this->lng->txt("image"), 'image_2');
+        $image_2->setALlowDeletion(true);
+        $image_2->setRequired(false);
+        $form->addItem($image_2);
+
+        $image_3 = new ilFileInputGUI($this->lng->txt("image"), 'image_3');
+        $image_3->setALlowDeletion(true);
+        $image_3->setRequired(false);
+        $form->addItem($image_3);
 
         // save and cancel commands
         if ($a_create) {
@@ -132,6 +155,7 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
         } else {
             $prop = $this->getProperties();
             $title->setValue($prop['title']);
+            $alignment->setValue($prop['alignment']);
 
             $form->addCommandButton("update", $this->lng->txt("save"));
             $form->addCommandButton("cancel", $this->lng->txt("cancel"));
@@ -149,32 +173,35 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
             
             // value saved in the page
             $properties['title'] = $form->getInput('title');
+            $properties['alignment'] = $form->getInput('alignment');
             
             // file object
-            if (isset($_FILES["image"]["name"])) {
-                $old_file_id = empty($properties['image']) ? null : $properties['image'];
-                
-                $fileObj = new ilObjFile((int) $old_file_id, false);
-                $fileObj->setType("file");
-                $fileObj->setTitle($_FILES["image"]["name"]);
-                $fileObj->setDescription("");
-                $fileObj->setFileName($_FILES["image"]["name"]);
-                $fileObj->setMode("filelist");
-                if (empty($old_file_id)) {
-                    $fileObj->create();
-                } else {
-                    $fileObj->update();
+            foreach(["logo", "image_1", "image_2", "image_3"] as $key) {
+                if (isset($_FILES[$key]["name"])) {
+                    $old_file_id = empty($properties[$key]) ? null : $properties[$key];
+                    
+                    $fileObj = new ilObjFile((int) $old_file_id, false);
+                    $fileObj->setType("file");
+                    $fileObj->setTitle($_FILES[$key]["name"]);
+                    $fileObj->setDescription("");
+                    $fileObj->setFileName($_FILES[$key]["name"]);
+                    $fileObj->setMode("filelist");
+                    if (empty($old_file_id)) {
+                        $fileObj->create();
+                    } else {
+                        $fileObj->update();
+                    }
+    
+                    // upload file to filesystem
+                    if ($_FILES[$key]["tmp_name"] !== "") {
+                        $fileObj->getUploadFile(
+                            $_FILES[$key]["tmp_name"],
+                            $_FILES[$key]["name"]
+                        );
+                    }
+    
+                    $properties[$key] = $fileObj->getId();
                 }
-
-                // upload file to filesystem
-                if ($_FILES["image"]["tmp_name"] !== "") {
-                    $fileObj->getUploadFile(
-                        $_FILES["image"]["tmp_name"],
-                        $_FILES["image"]["name"]
-                    );
-                }
-
-                $properties['image'] = $fileObj->getId();
             }
 
             if ($a_create) {
@@ -205,43 +232,48 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
         // show uploaded file
         $image_url = false;
         $title = $a_properties['title'];
-
-        if (!empty($a_properties['image'])) {
-            try {
-                $fileObj = new ilObjFile($a_properties['image'], false);
-
-                // security
-                $_SESSION[__CLASS__]['allowedFiles'][$fileObj->getId()] = true;
-
-                $this->ctrl->setParameter($this, 'id', $fileObj->getId());
-                $image_url = $this->ctrl->getLinkTargetByClass(array('ilUIPluginRouterGUI', 'ilCoverPluginGUI'),
+        $alignment = $a_properties['alignment'];
+        $image_url = [];
+        
+        // file object
+        foreach(["logo", "image_1", "image_2", "image_3"] as $key) {
+            if (!empty($a_properties[$key])) {
+                try {
+                    $fileObj = new ilObjFile($a_properties[$key], false);
+                    
+                    // security
+                    $_SESSION[__CLASS__]['allowedFiles'][$fileObj->getId()] = true;
+                    
+                    $this->ctrl->setParameter($this, 'id', $fileObj->getId());
+                    $image_url[$key] = $this->ctrl->getLinkTargetByClass(array('ilUIPluginRouterGUI', 'ilCoverPluginGUI'),
                     'downloadFile');
-                /* $title = $fileObj->getPresentationTitle(); */
-
-            } catch (Exception $e) {
-                /* $title = $e->getMessage(); */
+                    /* $title = $fileObj->getPresentationTitle(); */
+                    
+                } catch (Exception $e) {
+                    /* $title = $e->getMessage(); */
+                }
             }
-
         }
         
         include_once "Services/Style/System/classes/class.ilStyleDefinition.php";
         $dci_skin = ilStyleDefinition::getCurrentSkin() === 'dci';
-    
+        
         ob_start();
         ?>
-        <div class="dci-cover <?= !$dci_skin ? 'is-editing' : ''; ?>">
+        <div class="dci-cover <?= !$dci_skin ? 'is-editing' : ''; ?> align-<?= $alignment; ?>">
             <?php
-            if (!empty($title)) {
+            if (!empty($image_url["logo"])) {
                 ?>
-                <h1><?= $title; ?></h1>
+                <img src="<?= $image_url["logo"]; ?>" class="logo" title="<?= $title; ?>" />
                 <?php
             }
-            ?>
-            <?php
-            if (!empty($image_url)) {
-                ?>
-                <img src="<?= $image_url; ?>" />
-                <?php
+
+            foreach(["image_1", "image_2", "image_3"] as $key) {
+                if (!empty($image_url[$key])) {
+                    ?>
+                    <img src="<?= $image_url[$key]; ?>" />
+                    <?php
+                }
             }
             ?>
         </div>
