@@ -267,16 +267,37 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
                 <img src="<?= $image_url["logo"]; ?>" class="logo" title="<?= $title; ?>" />
                 <?php
             }
-
-            foreach(["image_1", "image_2", "image_3"] as $key) {
-                if (!empty($image_url[$key])) {
-                    ?>
-                    <img src="<?= $image_url[$key]; ?>" />
-                    <?php
-                }
-            }
             ?>
+
+            <div class="carousel">
+                <div class="splide">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+                        <?php
+                        foreach(["image_1", "image_2", "image_3"] as $key) {
+                            if (!empty($image_url[$key])) {
+                                ?>
+                                <li class="splide__slide">
+                                    <img src="<?= $image_url[$key]; ?>" />
+                                </li>
+                                <?php
+                            }
+                        }
+                        ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
+        <script>
+        document.addEventListener( 'DOMContentLoaded', function() {
+            new Splide( '.splide', {
+                type   : 'loop',
+                perPage: 1,
+                autoplay: 'play',
+            }).mount();
+        } );
+        </script>
         <?php
         $html = ob_get_clean();
         return $html;

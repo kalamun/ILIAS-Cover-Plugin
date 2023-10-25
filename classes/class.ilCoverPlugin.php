@@ -129,7 +129,12 @@ class ilCoverPlugin extends ilPageComponentPlugin
 
     public function getCssFiles(/* string */ $a_mode)/* : array */
     {
-        return ["css/cover.css"];
+        return ["css/cover.css", "css/splide.min.css", "css/splide-core.min.css"];
+    }
+    
+    public function getJavascriptFiles(/* string */ $a_mode)/* : array */
+    {
+        return ["js/splide.min.js"];
     }
     
 }
