@@ -239,16 +239,16 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
         foreach(["logo", "image_1", "image_2", "image_3"] as $key) {
             if (!empty($a_properties[$key])) {
                 try {
-                    $fileObj = new ilObjFile($a_properties[$key], false);
-                    
-                    // security
-                    $_SESSION[__CLASS__]['allowedFiles'][$fileObj->getId()] = true;
-                    
-                    $this->ctrl->setParameter($this, 'id', $fileObj->getId());
-                    $image_url[$key] = $this->ctrl->getLinkTargetByClass(array('ilUIPluginRouterGUI', 'ilCoverPluginGUI'),
-                    'downloadFile');
-                    /* $title = $fileObj->getPresentationTitle(); */
-                    
+                    if(!empty($a_properties[$key])) {
+                        $fileObj = new ilObjFile($a_properties[$key], false);
+                        
+                        // security
+                        $_SESSION[__CLASS__]['allowedFiles'][$fileObj->getId()] = true;
+                        
+                        $this->ctrl->setParameter($this, 'id', $fileObj->getId());
+                        $image_url[$key] = $this->ctrl->getLinkTargetByClass(array('ilUIPluginRouterGUI', 'ilCoverPluginGUI'), 'downloadFile');
+                        /* $title = $fileObj->getPresentationTitle(); */
+                    }                  
                 } catch (Exception $e) {
                     /* $title = $e->getMessage(); */
                 }
