@@ -177,7 +177,7 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
             
             // file object
             foreach(["logo", "image_1", "image_2", "image_3"] as $key) {
-                if (isset($_FILES[$key]["name"])) {
+                if (!empty($_FILES[$key]["name"])) {
                     $old_file_id = empty($properties[$key]) ? null : $properties[$key];
                     
                     $fileObj = new ilObjFile((int) $old_file_id, false);
@@ -259,6 +259,7 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
         $dci_skin = ilStyleDefinition::getCurrentSkin() === 'dci';
         
         ob_start();
+        print_r($a_properties);
         ?>
         <div class="dci-cover <?= !$dci_skin ? 'is-editing' : ''; ?> align-<?= $alignment; ?>">
             <?php
