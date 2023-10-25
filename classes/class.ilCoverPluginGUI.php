@@ -259,7 +259,6 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
         $dci_skin = ilStyleDefinition::getCurrentSkin() === 'dci';
         
         ob_start();
-        print_r($a_properties);
         ?>
         <div class="dci-cover <?= !$dci_skin ? 'is-editing' : ''; ?> align-<?= $alignment; ?>">
             <?php
