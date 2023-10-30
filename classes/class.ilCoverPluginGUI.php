@@ -295,6 +295,8 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
                 type   : 'loop',
                 perPage: 1,
                 autoplay: 'play',
+                pauseOnHover: false,
+                pauseOnFocus: false,
             }).mount();
         } );
         </script>
