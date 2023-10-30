@@ -54,7 +54,8 @@
 }
 .dci-cover .carousel .splide li[role="presentation"] button {
     padding: 0;
-    background: var(--color-blue);
+    margin: 0 0.5rem;
+    background: var(--color-white);
 }
 .dci-cover .carousel .splide__arrows {
     display: none;
