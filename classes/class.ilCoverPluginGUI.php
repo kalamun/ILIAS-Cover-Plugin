@@ -24,7 +24,7 @@
  */
 class ilCoverPluginGUI extends ilPageComponentPluginGUI
 {
-    protected /* ilLanguage */ $lng;
+    protected ilLanguage $lng;
     protected ilCtrl $ctrl;
     protected ilGlobalTemplateInterface $tpl;
 
@@ -42,7 +42,7 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
     /**
      * Execute command
      */
-    public function executeCommand() /* : void */
+    public function executeCommand() : void
     {
         $next_class = $this->ctrl->getNextClass();
 
@@ -60,7 +60,7 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
     /**
      * Create
      */
-    public function insert() /* : void */
+    public function insert() : void
     {
         $form = $this->initForm(true);
         $this->tpl->setContent($form->getHTML());
@@ -69,7 +69,7 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
     /**
      * Save new pc example element
      */
-    public function create() /* : void */
+    public function create() : void
     {
         $form = $this->initForm(true);
         if ($this->saveForm($form, true)) {
@@ -83,14 +83,14 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
         $this->tpl->setContent($form->getHTML());
     }
 
-    public function edit() /* : void */
+    public function edit() : void
     {
         $form = $this->initForm();
 
         $this->tpl->setContent($form->getHTML());
     }
 
-    public function update() /* : void */
+    public function update() : void
     {
         $form = $this->initForm(false);
         if ($this->saveForm($form, false)) {
@@ -227,7 +227,7 @@ class ilCoverPluginGUI extends ilPageComponentPluginGUI
      * @param string    page mode (edit, presentation, print, preview, offline)
      * @return string   html code
      */
-    public function getElementHTML(/* string */ $a_mode, /* array */ $a_properties, /* string */ $a_plugin_version) /* : string */
+    public function getElementHTML(string $a_mode, array $a_properties, string $a_plugin_version) : string
     {
         // show uploaded file
         $image_url = false;

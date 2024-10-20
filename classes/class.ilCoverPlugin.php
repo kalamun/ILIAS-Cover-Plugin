@@ -26,7 +26,7 @@ class ilCoverPlugin extends ilPageComponentPlugin
      * Get plugin name
      * @return string
      */
-    public function getPluginName() /* : string */
+    public function getPluginName() : string
     {
         return "Cover";
     }
@@ -34,7 +34,7 @@ class ilCoverPlugin extends ilPageComponentPlugin
     /**
      * Check if parent type is valid
      */
-    public function isValidParentType(/* string */ $a_parent_type) /* : bool */
+    public function isValidParentType(string $a_parent_type) : bool
     {
         // test with all parent types
         return true;
@@ -46,7 +46,7 @@ class ilCoverPlugin extends ilPageComponentPlugin
      * @param string $a_event
      * @param mixed  $a_parameter
      */
-    public function handleEvent(/* string */ $a_component, /* string */ $a_event, $a_parameter) /* : void */
+    public function handleEvent(string $a_component, string $a_event, $a_parameter) : void
     {
         $_SESSION['pctpc_listened_event'] = array('time' => time(), 'event' => $a_event);
     }
@@ -56,7 +56,7 @@ class ilCoverPlugin extends ilPageComponentPlugin
      * @param array  $a_properties     properties saved in the page, (should be modified if neccessary)
      * @param string $a_plugin_version plugin version of the properties
      */
-    public function onClone(/* array */ &$a_properties, /* string */ $a_plugin_version) /* : void */
+    public function onClone(array &$a_properties, string $a_plugin_version) : void
     {
         global $DIC;
         $mt = $DIC->ui()->mainTemplate();
@@ -82,7 +82,7 @@ class ilCoverPlugin extends ilPageComponentPlugin
      * @param array  $a_properties     properties saved in the page (will be deleted afterwards)
      * @param string $a_plugin_version plugin version of the properties
      */
-    public function onDelete(/* array */ $a_properties, /* string */ $a_plugin_version, /* bool */ $move_operation = false) /* : void */
+    public function onDelete(array $a_properties, string $a_plugin_version, bool $move_operation = false) : void
     {
         global $DIC;
         $mt = $DIC->ui()->mainTemplate();
@@ -108,7 +108,7 @@ class ilCoverPlugin extends ilPageComponentPlugin
      * @param string $src
      * @param string $dst
      */
-    private function rCopy(/* string */ $src, /* string */ $dst) /* : void */
+    private function rCopy(string $src, string $dst) : void
     {
         $dir = opendir($src);
         if (!is_dir($dst)) {
@@ -127,12 +127,12 @@ class ilCoverPlugin extends ilPageComponentPlugin
     }
 
 
-    public function getCssFiles(/* string */ $a_mode)/* : array */
+    public function getCssFiles(string $a_mode): array
     {
         return ["css/cover.css", "css/splide.min.css", "css/splide-core.min.css"];
     }
     
-    public function getJavascriptFiles(/* string */ $a_mode)/* : array */
+    public function getJavascriptFiles(string $a_mode): array
     {
         return ["js/splide.min.js"];
     }
