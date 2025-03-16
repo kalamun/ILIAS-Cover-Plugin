@@ -17,7 +17,7 @@ class ilCoverExporter extends ilXmlExporter
                     $deps[] = array(
                         "component" => "Modules/File",
                         "entity" => "file",
-                        "ids" => $file_id
+                        "ids" => [$file_id]
                     );
                 }
             }

@@ -22,16 +22,22 @@ class ilCoverImporter extends ilPageComponentPluginImporter /* ilXmlImporter */
         global $DIC;
 
         /** @var ilComponentFactory $component_factory */
-        // $component_factory = $DIC["component.factory"]; // ILIAS 8
+        $component_factory = $DIC["component.factory"]; // ILIAS 8
 
         /** @var ilTestPageComponentPlugin $plugin */
-        /* $plugin = $component_factory->getPlugin("pCover"); // ILIAS 8 */
-        $plugin = ilPluginAdmin::getPluginObject(IL_COMP_SERVICE, 'COPage', 'pgcp', 'Cover');
+        $plugin = $component_factory->getPlugin("pccvr"); // ILIAS 8
+        // $plugin = ilPluginAdmin::getPluginObject(IL_COMP_SERVICE, 'COPage', 'pgcp', 'Cover');
 
         $new_id = self::getPCMapping($a_id, $a_mapping);
 
         $properties = self::getPCProperties($new_id);
+        if (empty($properties)) $properties = [];
+        
         $version = self::getPCVersion($new_id);
+        if (empty($version)) {
+            // $version = $plugin->getVersion();
+            $version = "0.10.0";
+        }
 
         foreach(["logo", "image_1", "image_2", "image_3"] as $property) {
           $old_file_id = $properties[$property];
