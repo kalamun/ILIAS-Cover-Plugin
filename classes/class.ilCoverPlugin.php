@@ -129,12 +129,23 @@ class ilCoverPlugin extends ilPageComponentPlugin
 
     public function getCssFiles(string $a_mode): array
     {
-        return ["css/cover.css", "css/splide.min.css", "css/splide-core.min.css"];
+        // ilPCPlugged::getCssFiles() prepends $plugin->getDirectory(), which is
+        // an absolute filesystem path, not a URL. It only skips that prepending
+        // if the returned path already contains "//", so we use the web-relative
+        // directory (getRelativeDirectory()) with a "//" separator to get a
+        // correct, browser-loadable path.
+        return [
+            $this->getRelativeDirectory() . "//css/cover.css",
+            $this->getRelativeDirectory() . "//css/splide.min.css",
+            $this->getRelativeDirectory() . "//css/splide-core.min.css",
+        ];
     }
     
     public function getJavascriptFiles(string $a_mode): array
     {
-        return ["js/splide.min.js"];
+        return [
+            $this->getRelativeDirectory() . "//css/splide.min.js",
+        ];
     }
     
 }
